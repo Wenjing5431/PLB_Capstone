@@ -1,0 +1,33 @@
+.map-container {
+  height: 90vh;
+  background: #f9fbfd !important;
+  margin: -1em 1em !important;
+}
+
+.img-container {
+  padding: 5em 0px;
+}
+.temp-image {
+  width: 18em !important;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.temp-text {
+  margin-top: 2em;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.4em;
+  line-height: 1.6em;
+}
+.text-color-blue {
+  color: #2d90f5;
+}
+
+.text-color-red {
+  color: #ac293e;
+}
+.tags {
+  color: red;
+  text-transform: lowercase;
+}
