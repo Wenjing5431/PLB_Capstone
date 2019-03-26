@@ -1,6 +1,6 @@
 import "../css/App.css";
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import RootPage from "./RootPage";
@@ -25,21 +25,23 @@ class App extends React.Component {
       //   <AnnotList />
       // </div>
       <div className="app">
-        <BrowserRouter>
-          <div>
-            <Header username={this.state.username} />
-            <Route path="/" exact component={RootPage} />
-            <Route
-              path="/login"
-              render={props => (
-                <Login {...props} onNameSubmit={this.LoginHandler} />
-              )}
-            />
-            <ProtectedRoute path="/dashboard" component={AnnotList} />
-            <Route path="*" component={RandomPage} />
-            <Footer />
-          </div>
-        </BrowserRouter>
+        {/* <BrowserRouter>
+          <div> */}
+        <Header username={this.state.username} />
+        <Switch>
+          <Route path="/" exact component={RootPage} />
+          <Route
+            path="/login"
+            render={props => (
+              <Login {...props} onNameSubmit={this.LoginHandler} />
+            )}
+          />
+          <ProtectedRoute path="/dashboard" component={AnnotList} />
+          <Route path="*" component={RandomPage} />
+        </Switch>
+        <Footer />
+        {/* </div>
+        </BrowserRouter> */}
       </div>
     );
   }
