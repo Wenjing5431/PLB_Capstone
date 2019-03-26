@@ -1,6 +1,7 @@
 import "../css/Login.css";
 import React from "react";
 import { Link } from "react-router-dom";
+import Auth from "./Auth";
 
 class Login extends React.Component {
   state = {
@@ -24,9 +25,12 @@ class Login extends React.Component {
     }
 
     this.props.onNameSubmit(this.state.username);
-    history.push({
-      pathname: "/dashboard",
-      state: { username: this.state.username }
+
+    Auth.login(() => {
+      this.props.history.push({
+        pathname: "/dashboard",
+        state: { username: this.state.username }
+      });
     });
   };
 

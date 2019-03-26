@@ -6,6 +6,8 @@ import Footer from "./Footer";
 import RootPage from "./RootPage";
 import Login from "./Login";
 import AnnotList from "./AnnotList";
+import { ProtectedRoute } from "./ProtectedRoute";
+import { RandomPage } from "./404Page";
 
 class App extends React.Component {
   state = {
@@ -33,7 +35,8 @@ class App extends React.Component {
                 <Login {...props} onNameSubmit={this.LoginHandler} />
               )}
             />
-            <Route path="/dashboard" component={AnnotList} />
+            <ProtectedRoute path="/dashboard" component={AnnotList} />
+            <Route path="*" component={RandomPage} />
             <Footer />
           </div>
         </BrowserRouter>

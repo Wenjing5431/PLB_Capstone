@@ -1,29 +1,60 @@
 import "../css/Header.css";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import Auth from "./Auth";
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.renderLogout = this.renderLogout.bind(this);
+  }
+
+  renderLogout = () => {
+    Auth.logout(() => {
+      this.props.history.push({
+        pathname: "/"
+      });
+    });
+  };
+
   render() {
     console.log("header props", this.props.username);
+    console.log("authentication", Auth.isAuthenticated());
     const { username } = this.props;
+    const authenticated = Auth.isAuthenticated();
     console.log(username ? "yes" : "no");
     return (
       <div className="ui secondary fixed pointing menu header">
-        <Link to="/" className="item">
+        {authenticated ? (
+          <Link to="/dashboard" className="item">
+            <i className="fas fa-rocket header-icon" />
+            Personal Learning Booster
+          </Link>
+        ) : (
+          <Link to="/" className="item">
+            <i className="fas fa-rocket header-icon" />
+            Personal Learning Booster
+          </Link>
+        )}
+        {/* <Link to="/" className="item">
           <i className="fas fa-rocket header-icon" />
           Personal Learning Booster
-        </Link>
+        </Link> */}
         <div className="right menu">
-          <Link to="" className="item">
+          <a
+            href="https://github.com/Wenjing5431/PLB_Capstone"
+            target="_blank"
+            className="item"
+          >
             Github
-          </Link>
+          </a>
 
-          {username ? (
+          {authenticated ? (
             <span className="header-span">
               <p className="item">{username}</p>
-              <Link to="/login" className="item">
+              <a className="item" onClick={this.renderLogout}>
                 Logout
-              </Link>
+              </a>
             </span>
           ) : (
             <span className="header-span">
@@ -41,4 +72,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);
