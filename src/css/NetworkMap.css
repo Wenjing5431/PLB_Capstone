@@ -31,3 +31,21 @@
   color: red;
   text-transform: lowercase;
 }
+
+.test-style {
+  font-size: 300%;
+  font-weight: bold;
+}
+
+.DVSL-container.DVSL-NetChart.DVSL-flat {
+  height: 70vh !important;
+}
+.cover {
+  background-color: #f9fbfd;
+  height: 100px;
+  width: 160px;
+  position: absolute;
+  bottom: 1em;
+  right: 0;
+  z-index: 999 !important;
+}

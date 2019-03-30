@@ -8,6 +8,10 @@ import { fetchSearchedAnnots } from "../actions";
 import axios from "axios";
 
 class AnnotList extends React.Component {
+  state = {
+    selectedTerm: ""
+  };
+
   componentDidMount() {
     const { username } = this.props.location.state;
     this.props.fetchAnnots(username);
@@ -94,11 +98,17 @@ class AnnotList extends React.Component {
 
   onSearchSubmit = term => {
     this.props.fetchSearchedAnnots(term);
+    this.setState({
+      selectedTerm: term
+    });
   };
 
   onClickTag = tag => {
-    console.log("tag by clicked", tag);
+    // console.log("tag by clicked", tag);
     this.props.fetchSearchedAnnots(tag);
+    this.setState({
+      selectedTerm: tag
+    });
   };
 
   //   renderSearchedAnnots() {
@@ -125,7 +135,10 @@ class AnnotList extends React.Component {
           {/* <div className="ui relaxed divided list">{this.renderList()}</div> */}
         </div>
 
-        <NetworkMap searchedAnnots={{ data }} />
+        <NetworkMap
+          searchedAnnots={{ data }}
+          passTag={this.state.selectedTerm}
+        />
 
         {/* <div className="fetchedAnnots">
           <div>{this.renderSearchedAnnots()}</div>

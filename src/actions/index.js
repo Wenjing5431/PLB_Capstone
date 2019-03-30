@@ -26,6 +26,9 @@ export const fetchSearchedAnnots = tag => {
       }
     });
 
-    dispatch({ type: "FETCH_SEARCHED_ANNOTS", payload: response.data.rows });
+    dispatch({
+      type: "FETCH_SEARCHED_ANNOTS",
+      payload: response.data.rows
+    });
   };
 };
