@@ -18,6 +18,13 @@ window.ZoomChartsLicenseKey =
   "c5fd0134969d7dca1050eeffed66884866f97ae26895c32dd13c8e5cf6c9c37e4a1169ccdaa01";
 
 class NetworkMap extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      annotId: ""
+    };
+  }
+
   componentDidUpdate() {
     // console.log("pass tag here:", this.props.passTag);
     // console.log("show me", this.props.searchedAnnots.data);
@@ -28,6 +35,7 @@ class NetworkMap extends React.Component {
 
     const annotArray = array.map(arr => {
       return {
+        annotId: arr.id,
         created: arr.created,
         document: arr.document,
         links: arr.links,
@@ -49,17 +57,19 @@ class NetworkMap extends React.Component {
       }, -1);
       if (occurs >= 0) {
         o[occurs].text = o[occurs].text.concat(cur.text);
+        o[occurs].annotId = o[occurs].annotId.concat(cur.annotId);
       } else {
         var obj = {
           user: cur.user,
-          text: [cur.text]
+          text: [cur.text],
+          annotId: [cur.annotId]
         };
         o = o.concat([obj]);
       }
       return o;
     }, []);
 
-    console.log("same user array:", arrayModify);
+    // console.log("same user array:", arrayModify);
 
     const newNodesM = [];
     const newNodesT = [];
@@ -73,7 +83,8 @@ class NetworkMap extends React.Component {
         style: {
           label: arrayModify[i].user,
           fillColor: "#65BCF8",
-          lineColor: "#59A8DF"
+          // lineColor: "#59A8DF",
+          lineColor: "rgba(89, 168, 223, 0.5)"
         },
         loaded: true
       });
@@ -85,7 +96,8 @@ class NetworkMap extends React.Component {
         style: {
           label: selectedTag,
           fillColor: "#912F40",
-          lineColor: "#AB1927"
+          // lineColor: "#AB1927",
+          lineColor: "rgba(171, 25, 39, 0.5)"
         },
         loaded: true
       },
@@ -100,8 +112,10 @@ class NetworkMap extends React.Component {
             style: {
               label: arrayModify[j].text[k],
               fillColor: "#68CF9D",
-              lineColor: "#62BC90"
+              // lineColor: "#62BC90",
+              lineColor: "rgba(98, 188, 144, 0.5)"
             },
+            annotId: arrayModify[j].annotId[k],
             loaded: true,
             multiple: "yes"
           });
@@ -110,10 +124,12 @@ class NetworkMap extends React.Component {
         newNodesT.push({
           id: "A" + j + "N" + j,
           style: {
-            label: array[j].text,
+            label: arrayModify[j].text[0],
             fillColor: "#68CF9D",
-            lineColor: "#62BC90"
+            // lineColor: "#62BC90",
+            lineColor: "rgba(98, 188, 144, 0.5)"
           },
+          annotId: arrayModify[j].annotId[0],
           loaded: true
         });
       }
@@ -145,11 +161,11 @@ class NetworkMap extends React.Component {
     }
 
     var newLinks = newLinksM.concat(newLinksT);
-    console.log("newLinks", newLinks);
+    // console.log("newLinks", newLinks);
 
     if (selectedTag !== "") {
       var t = new Chart({
-        container: document.getElementById("chartTimeChart"),
+        container: document.getElementById("chartNetChart"),
         area: {
           style: { fillColor: "#f9fbfd" }
         },
@@ -165,11 +181,20 @@ class NetworkMap extends React.Component {
         style: {
           node: {
             display: "roundtext",
-            lineWidth: 2,
-            lineColor: "#2fc32f"
+            lineWidth: 5
+            // lineDash: [10, 2, 5, 2]
           },
+          nodeStyleFunction: nodeStyle,
+          linkStyleFunction: linkStyle,
           link: {
             fillColor: "#D8D8D8"
+            // lineDash: [10, 5, 5, 5]
+          },
+          nodeHovered: {
+            shadowBlur: 1
+          },
+          linkHovered: {
+            shadowBlur: 1
           },
           nodeLabel: {
             textStyle: { fillColor: "white" }
@@ -188,6 +213,12 @@ class NetworkMap extends React.Component {
             links: newLinks
           }
         },
+        events: {
+          onDoubleClick(event) {
+            event.preventDefault();
+            console.log("work?", event.clickNode.data.annotId);
+          }
+        },
         toolbar: {
           fullscreen: true,
           enabled: true
@@ -198,6 +229,34 @@ class NetworkMap extends React.Component {
           }
         }
       });
+
+      function nodeStyle(node) {
+        if (node.hovered) {
+          node.radius = 38;
+        } else {
+          node.radius = 30;
+        }
+      }
+
+      function linkStyle(link) {
+        if (link.hovered) {
+          link.radius = 2;
+          link.fillColor = "#979797";
+          link.shadowColor = "#979797";
+        } else {
+          link.radius = 1;
+          link.fillColor = "#D8D8D8";
+        }
+      }
+      // function graphDoubleClick(event) {
+      //   event.preventDefault();
+      //   console.log("work?", event.clickNode.data.annotId);
+      //   console.log("test this:", this.props.passTag);
+      //   // this.setState({
+      //   //   annotId: event.clickNode.data.annotId
+      //   // });
+      //   // this.passAnnotId(event.clickNode.data.annotId);
+      // }
     }
   }
 
@@ -235,16 +294,10 @@ class NetworkMap extends React.Component {
   render() {
     return (
       <div className="map-container">
-        <div id="chartTimeChart" className="chart" />
+        <div id="chartNetChart" className="chart" />
         <p className="cover" />
-        {/* <dvsl-test style={{ color: "pink" }}>
-          this is pink
-          <div className="DVSL-suppress-default-styles test-style">
-            but this should be gray
-          </div>
-        </dvsl-test> */}
-
         <div>{this.renderAnnots()}</div>
+        <p>passId: {this.idDate}</p>
       </div>
     );
   }

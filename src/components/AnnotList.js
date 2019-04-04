@@ -8,9 +8,14 @@ import { fetchSearchedAnnots } from "../actions";
 import axios from "axios";
 
 class AnnotList extends React.Component {
-  state = {
-    selectedTerm: ""
-  };
+  constructor(props) {
+    super(props);
+    this.renderTag = this.renderTag.bind(this);
+    this.state = {
+      selectedTerm: "",
+      isOpen: false
+    };
+  }
 
   componentDidMount() {
     const { username } = this.props.location.state;
@@ -81,7 +86,8 @@ class AnnotList extends React.Component {
         count: tagCounts[uniqueTags[n]]
       });
     }
-    // console.log("lalal", tagArray);
+    console.log("lalal", tagArray);
+
     return tagArray.map(tag => {
       return (
         <div className="ui horizontal list" key={tag.text}>
@@ -111,6 +117,12 @@ class AnnotList extends React.Component {
     });
   };
 
+  // showMore() {
+  //   this.state.itemsToShow === 20
+  //     ? this.setState({ itemsToShow: this.state.try.length, expanded: true })
+  //     : this.setState({ itemsToShow: 20, expanded: false });
+  // }
+
   //   renderSearchedAnnots() {
   //     console.log("haha", this.props.searchedAnnots);
   //     return this.props.searchedAnnots.map(annot => {
@@ -130,9 +142,8 @@ class AnnotList extends React.Component {
         <div className="dashboard-container">
           <SearchedAnnotList onSubmit={this.onSearchSubmit} />
           <div className="tag-list">
-            <div>{this.renderTag()}</div>
+            <div className="list-container">{this.renderTag()}</div>
           </div>
-          {/* <div className="ui relaxed divided list">{this.renderList()}</div> */}
         </div>
 
         <NetworkMap
