@@ -18,12 +18,15 @@ window.ZoomChartsLicenseKey =
   "c5fd0134969d7dca1050eeffed66884866f97ae26895c32dd13c8e5cf6c9c37e4a1169ccdaa01";
 
 class NetworkMap extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      annotId: ""
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     annotId: ""
+  //   };
+  // }
+  state = {
+    annotId: ""
+  };
 
   componentDidUpdate() {
     // console.log("pass tag here:", this.props.passTag);
@@ -163,6 +166,7 @@ class NetworkMap extends React.Component {
     var newLinks = newLinksM.concat(newLinksT);
     // console.log("newLinks", newLinks);
 
+    var self = this;
     if (selectedTag !== "") {
       var t = new Chart({
         container: document.getElementById("chartNetChart"),
@@ -214,10 +218,7 @@ class NetworkMap extends React.Component {
           }
         },
         events: {
-          onDoubleClick(event) {
-            event.preventDefault();
-            console.log("work?", event.clickNode.data.annotId);
-          }
+          onDoubleClick: graphDoubleClick
         },
         toolbar: {
           fullscreen: true,
@@ -248,15 +249,12 @@ class NetworkMap extends React.Component {
           link.fillColor = "#D8D8D8";
         }
       }
-      // function graphDoubleClick(event) {
-      //   event.preventDefault();
-      //   console.log("work?", event.clickNode.data.annotId);
-      //   console.log("test this:", this.props.passTag);
-      //   // this.setState({
-      //   //   annotId: event.clickNode.data.annotId
-      //   // });
-      //   // this.passAnnotId(event.clickNode.data.annotId);
-      // }
+      function graphDoubleClick(event) {
+        event.preventDefault();
+        self.setState({
+          annotId: event.clickNode.data.annotId
+        });
+      }
     }
   }
 
@@ -297,7 +295,7 @@ class NetworkMap extends React.Component {
         <div id="chartNetChart" className="chart" />
         <p className="cover" />
         <div>{this.renderAnnots()}</div>
-        <p>passId: {this.idDate}</p>
+        <p>passId: {this.state.annotId}</p>
       </div>
     );
   }
