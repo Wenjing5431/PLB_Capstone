@@ -2,10 +2,10 @@ import "../css/AnnotList.css";
 import React from "react";
 import SearchedAnnotList from "./SearchAnnots";
 import NetworkMap from "./NetworkMap";
+import MapFilter from "./Filter";
 import { connect } from "react-redux";
 import { fetchAnnots } from "../actions";
 import { fetchSearchedAnnots } from "../actions";
-import axios from "axios";
 
 class AnnotList extends React.Component {
   constructor(props) {
@@ -13,7 +13,10 @@ class AnnotList extends React.Component {
     this.renderTag = this.renderTag.bind(this);
     this.state = {
       selectedTerm: "",
-      isOpen: false
+      isOpen: false,
+      backMap: false,
+      time: "",
+      limit: 50
     };
   }
 
@@ -86,7 +89,7 @@ class AnnotList extends React.Component {
         count: tagCounts[uniqueTags[n]]
       });
     }
-    console.log("lalal", tagArray);
+    // console.log("lalal", tagArray);
 
     return tagArray.map(tag => {
       return (
@@ -103,18 +106,30 @@ class AnnotList extends React.Component {
   }
 
   onSearchSubmit = term => {
-    this.props.fetchSearchedAnnots(term);
+    this.props.fetchSearchedAnnots(term, this.state.limit);
     this.setState({
-      selectedTerm: term
+      selectedTerm: term,
+      backMap: false
     });
   };
 
   onClickTag = tag => {
     // console.log("tag by clicked", tag);
-    this.props.fetchSearchedAnnots(tag);
+    this.props.fetchSearchedAnnots(tag, this.state.limit);
     this.setState({
-      selectedTerm: tag
+      selectedTerm: tag,
+      backMap: false
     });
+  };
+
+  handleTime = time => {
+    this.setState({
+      time: time
+    });
+  };
+
+  handleLimit = limit => {
+    this.props.fetchSearchedAnnots(this.state.selectedTerm, Number(limit));
   };
 
   // showMore() {
@@ -137,6 +152,8 @@ class AnnotList extends React.Component {
 
   render() {
     const data = this.props.searchedAnnots;
+    const Pagedata = this.props.pageAnnots;
+    // console.log("all annots on this page!:", this.props.pageAnnots);
     return (
       <div className="dashboard">
         <div className="dashboard-container">
@@ -147,21 +164,29 @@ class AnnotList extends React.Component {
         </div>
 
         <NetworkMap
-          searchedAnnots={{ data }}
+          searchedAnnots={{ data, Pagedata }}
           passTag={this.state.selectedTerm}
+          backMap={this.state.backMap}
+          handleTime={this.state.time}
         />
 
-        {/* <div className="fetchedAnnots">
-          <div>{this.renderSearchedAnnots()}</div>
-        </div> */}
+        <MapFilter
+          checkTag={this.state.selectedTerm}
+          onSelectTime={this.handleTime}
+          onSelectLimit={this.handleLimit}
+        />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("state", state);
-  return { annots: state.annots, searchedAnnots: state.searchedAnnots };
+  // console.log("state", state);
+  return {
+    annots: state.annots,
+    searchedAnnots: state.searchedAnnots,
+    pageAnnots: state.pageAnnots
+  };
 };
 
 // const mapDispatchToPros = dispatch => ({

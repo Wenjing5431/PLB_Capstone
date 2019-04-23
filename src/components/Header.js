@@ -18,22 +18,22 @@ class Header extends React.Component {
   };
 
   render() {
-    console.log("header props", this.props.username);
-    console.log("authentication", Auth.isAuthenticated());
+    // console.log("header props", this.props.username);
+    // console.log("authentication", Auth.isAuthenticated());
     const { username } = this.props;
     const authenticated = Auth.isAuthenticated();
-    console.log(username ? "yes" : "no");
+    // console.log(username ? "yes" : "no");
     return (
       <div className="ui secondary fixed pointing menu header">
         {authenticated ? (
           <Link to="/dashboard" className="item">
-            <i className="fas fa-rocket header-icon" />
-            Personal Learning Booster
+            <i className="fas fa-compass header-icon" />
+            Personal Learning Compass
           </Link>
         ) : (
           <Link to="/" className="item">
-            <i className="fas fa-rocket header-icon" />
-            Personal Learning Booster
+            <i className="fas fa-compass header-icon" />
+            Personal Learning Compass
           </Link>
         )}
         {/* <Link to="/" className="item">

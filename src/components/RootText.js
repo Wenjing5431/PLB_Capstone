@@ -14,8 +14,15 @@ const RootText = () => {
         <p className="text-content-sub">
           Discover and explore{" "}
           <a className="text-color">new learning resources of insterest.</a>{" "}
-          <br /> Link <a className="text-color">Hypothesis </a>right now to
-          create your learning network
+          <br /> Link{" "}
+          <a
+            className="text-color"
+            href="https://web.hypothes.is/"
+            target="_blank"
+          >
+            Hypothesis{" "}
+          </a>
+          right now to create your learning network
           <br /> by connecting with people sharing the same learning
           <br /> interest, ideas and resources.
         </p>

@@ -22,6 +22,10 @@
 .text-color {
   color: #2d90f5 !important;
 }
+a.text-color:hover,
+a.text-color:focus {
+  text-decoration: underline #2d90f5;
+}
 button.root-button {
   margin-top: 1rem !important;
   border-radius: 0px !important;

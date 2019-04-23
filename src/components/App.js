@@ -2,7 +2,7 @@ import "../css/App.css";
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Header from "./Header";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import RootPage from "./RootPage";
 import Login from "./Login";
 import AnnotList from "./AnnotList";
@@ -39,7 +39,7 @@ class App extends React.Component {
           <ProtectedRoute path="/dashboard" component={AnnotList} />
           <Route path="*" component={RandomPage} />
         </Switch>
-        <Footer />
+        {/* <Footer /> */}
         {/* </div>
         </BrowserRouter> */}
       </div>
