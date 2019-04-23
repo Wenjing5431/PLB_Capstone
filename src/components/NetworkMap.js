@@ -72,7 +72,7 @@ class NetworkMap extends React.Component {
     const pageArray = this.props.searchedAnnots.Pagedata.filter(arr => {
       return arr.references === undefined;
     });
-    console.log("new array for page", pageArray);
+    // console.log("new array for page", pageArray);
 
     var testData = {
       nodes: [
@@ -297,7 +297,7 @@ class NetworkMap extends React.Component {
     var self = this;
     var selfProps = this.props;
 
-    if (selectedTag !== "" && selectedTag !== self.state.preTag) {
+    if (selectedTag !== "") {
       var t = new Chart({
         container: document.getElementById("chartNetChart"),
         area: {
