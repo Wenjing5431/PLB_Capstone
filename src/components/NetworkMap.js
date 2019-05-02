@@ -182,6 +182,7 @@ class NetworkMap extends React.Component {
           fillColor: "#65BCF8",
           lineColor: "rgba(89, 168, 223, 0.5)"
         },
+        user: true,
         loaded: true
       });
     }
@@ -470,6 +471,7 @@ class NetworkMap extends React.Component {
       }
       function graphDoubleClick(event) {
         event.preventDefault();
+        console.log("event data:", event.clickNode.data);
         // console.log("tell me double", event.clickNode);
         if (event.clickNode === undefined) {
           return;
@@ -480,10 +482,13 @@ class NetworkMap extends React.Component {
             preTag: selectedTag
           });
           selfProps.fetchFullAnnot(event.clickNode.data.annotId);
-        }
-        if (event.clickNode.data.incontext) {
+        } else if (event.clickNode.data.incontext) {
           // console.log("original page:", event.clickNode.data.incontext);
           window.open(event.clickNode.data.incontext);
+        } else if (event.clickNode.data.user) {
+          window.open(
+            "https://hypothes.is/users/" + event.clickNode.data.style.label
+          );
         }
       }
       function graghClick(event) {
